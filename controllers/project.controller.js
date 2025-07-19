@@ -20,7 +20,7 @@ export const createProject = async (req, res, next) => {
     const savedProject = await newProject.save();
     res.status(201).json(savedProject);
   } catch (error) {
-    next(error);
+    next(error);  
   }
 };
 

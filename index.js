@@ -22,8 +22,23 @@ mongoose.connect(process.env.MONGO)
 const __dirname = path.resolve()
 
 const app = express()
+const allowedOrigins = [
+  "https://euphonious-taffy-175dbd.netlify.app",
+  "http://www.softhouze.com",
+  "https://softhouze.com", // optional for local dev
+];
+
 app.use(cors({
-  origin: 'https://euphonious-taffy-175dbd.netlify.app',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (e.g., curl, mobile apps)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 app.use(express.json())
